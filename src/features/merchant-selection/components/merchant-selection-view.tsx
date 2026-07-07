@@ -3,44 +3,46 @@ import { FieldLegend, FieldSet, Item, ItemActions, ItemContent, ItemDescription,
 import { ChevronRightIcon } from "lucide-react"
 import { Link } from "react-router"
 import { routes } from "@khinemyaezin/seller-contracts"
+import { useId } from "react"
 
 export type MerchantTypeSelectionViewProps = {
 }
 
 export default function MerchantTypeSelectionView({ }: MerchantTypeSelectionViewProps) {
+    const id = useId();
+    const items = [
+        {
+            title: "Individual Seller (C2C)",
+            description: "For individuals and small independent sellers.",
+            route: routes.individualOnboarding
+        },
+        {
+            title: "Retailer & Business",
+            description: "For registered businesses and enterprise retailers.",
+            route: routes.retailerOnboarding
+        }
+    ]
     return (
         <FieldSet>
             <FieldLegend>What type of business do you have?</FieldLegend>
             <div className="flex w-full max-w-md flex-col gap-3">
-                <Item variant="outline" asChild>
-                    <Link to={routes.individualOnboarding}>
-                        <ItemContent>
-                            <ItemTitle>Individual Seller (C2C)</ItemTitle>
-                            <ItemDescription>
-                                For individuals and small independent sellers.
-                            </ItemDescription>
-                        </ItemContent>
-                        <ItemActions>
-                            <ChevronRightIcon className="size-4" />
-                        </ItemActions>
-                    </Link>
-                </Item>
-                <Item variant="outline" asChild>
-                    <Link to={routes.retailerOnboarding}>
-                        <ItemContent>
-                            <ItemTitle>Retailer & Business</ItemTitle>
-                            <ItemDescription>
-                                For registered businesses and enterprise retailers.
-                            </ItemDescription>
-                        </ItemContent>
-                        <ItemActions>
-                            <ChevronRightIcon className="size-4" />
-                        </ItemActions>
-                    </Link>
-                </Item>
+                {items.map((value,index) => (
+                    <Item variant="outline" key={`${id}-${index}`} asChild>
+                        <Link to={value.route}>
+                            <ItemContent>
+                                <ItemTitle>{value.title}</ItemTitle>
+                                <ItemDescription>
+                                    {value.description}
+                                </ItemDescription>
+                            </ItemContent>
+                            <ItemActions>
+                                <ChevronRightIcon className="size-4" />
+                            </ItemActions>
+                        </Link>
+                    </Item>
+                ))}
+
             </div>
         </FieldSet>
-
-
     )
 }
