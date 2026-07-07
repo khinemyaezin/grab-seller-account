@@ -42,7 +42,7 @@ export default defineConfig(({ mode }) => {
           },
           '@khinemyaezin/seller-api': {
             singleton: true,
-            requiredVersion: '^1.0.1-canary-0a83eed',
+            requiredVersion: '^1.0.1-canary-96f0175',
           }
         },
       }),

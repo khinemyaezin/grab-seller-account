@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",
-    "@khinemyaezin/seller-api": "^1.0.1-canary-2600303",
-    "@khinemyaezin/seller-contracts": "^1.0.1-canary-2600303",
-    "@khinemyaezin/seller-ui": "^1.0.1-canary-2600303",
+    "@khinemyaezin/seller-api": "^1.0.1-canary-96f0175",
+    "@khinemyaezin/seller-contracts": "^1.0.1-canary-96f0175",
+    "@khinemyaezin/seller-ui": "^1.0.1-canary-96f0175",
     "@tanstack/react-query": "5.99.2",
     "lucide-react": "1.8.0",
     "react": "19.2.4",
