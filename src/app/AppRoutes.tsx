@@ -12,14 +12,16 @@ export default function AppRoutes({ link, platform }: {
   platform?: SellerPlatform;
 }) {
   return (
-    <PlatformProvider platform={platform}>
-      <EntryLinkProvider link={link}>
-        <Routes>
-          <Route path="" element={<MerchantSelectionPage />} />
-          <Route path={routes.individualOnboarding} element={<C2cOnboardingPage />} />
-          <Route path={routes.retailerOnboarding} element={<RetailerOnboardingPage />} />
-        </Routes>
-      </EntryLinkProvider>
-    </PlatformProvider>
+    <div className="seller-account-mfe">
+      <PlatformProvider platform={platform}>
+        <EntryLinkProvider link={link}>
+          <Routes>
+            <Route path="" element={<MerchantSelectionPage />} />
+            <Route path={routes.individualOnboarding} element={<C2cOnboardingPage />} />
+            <Route path={routes.retailerOnboarding} element={<RetailerOnboardingPage />} />
+          </Routes>
+        </EntryLinkProvider>
+      </PlatformProvider>
+    </div>
   );
 }
