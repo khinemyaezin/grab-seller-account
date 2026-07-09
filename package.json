@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "5.2.2",
-    "@khinemyaezin/seller-api": "^1.0.1-canary-9998cda",
-    "@khinemyaezin/seller-contracts": "^1.0.1-canary-c8afa68",
-    "@khinemyaezin/seller-ui": "^1.0.1-canary-c8afa68",
+ "@khinemyaezin/seller-api": "file:../grab-seller-shared-ui/packages/seller-api",
+    "@khinemyaezin/seller-contracts": "file:../grab-seller-shared-ui/packages/seller-contracts",
+    "@khinemyaezin/seller-ui": "file:../grab-seller-shared-ui/packages/seller-ui",
     "@tanstack/react-query": "5.99.2",
     "lucide-react": "1.8.0",
     "react": "19.2.4",
