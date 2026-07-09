@@ -1,6 +1,6 @@
 import { routes, SellerPlatform } from "@khinemyaezin/seller-contracts";
 import { HateoasLink } from "@khinemyaezin/seller-api";
-import { EntryLinkProvider, PlatformProvider } from "@khinemyaezin/seller-ui";
+import { EntryLinkProvider, PlatformProvider, NotFoundPage } from "@khinemyaezin/seller-ui";
 import { Route, Routes } from "react-router";
 import C2cOnboardingPage from "@/features/c2c-onboarding/pages/c2c-onboarding-page";
 import RetailerOnboardingPage from "@/features/retailer-onboarding/pages/retailer-onboarding-page";
@@ -19,6 +19,7 @@ export default function AppRoutes({ link, platform }: {
             <Route path="" element={<MerchantSelectionPage />} />
             <Route path={routes.individualOnboarding} element={<C2cOnboardingPage />} />
             <Route path={routes.retailerOnboarding} element={<RetailerOnboardingPage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </EntryLinkProvider>
       </PlatformProvider>
