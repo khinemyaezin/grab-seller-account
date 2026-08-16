@@ -2,7 +2,6 @@ import { Header, usePlatform } from "@khinemyaezin/seller-ui";
 import C2cAnimation from "@/features/shared/components/animation/c2c-animation";
 import C2cAccountOnboardingView from "../components/c2c-onboarding-view";
 import useRoot from "@/features/shared/hooks/use-root";
-import { eventBus } from "@khinemyaezin/seller-api";
 
 export default function C2cOnboardingPage() {
     const { data: root } = useRoot();
@@ -26,7 +25,7 @@ export default function C2cOnboardingPage() {
                                 createApplicationLink={root?.createC2cApplication}
                                 getApplicationLink={root?.getC2cApplication}
                                 onSuccess={() => {
-                                    (platform?.events ?? eventBus).publish("seller-merchant:registration-success:v1", {})
+                                    platform?.events?.emit("seller-merchant:registration-success:v1", {})
                                 }}
                             />
                         )}
