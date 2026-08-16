@@ -2,7 +2,6 @@ import { Header, usePlatform } from "@khinemyaezin/seller-ui"
 import RetailerAnimation from "@/features/shared/components/animation/retailer-animation";
 import RetailerAccountOnboardingView from "../components/retailer-onboarding-view"
 import useRoot from "@/features/shared/hooks/use-root";
-import { eventBus } from "@khinemyaezin/seller-api";
 
 export type RetailerOnboardingPageProps = {
 
@@ -28,7 +27,7 @@ export default function RetailerOnboardingPage({ }: RetailerOnboardingPageProps)
                             <RetailerAccountOnboardingView
                                 getApplicationLink={root?.getRetailerApplication}
                                 createApplicationLink={root?.createRetailerApplication}
-                                onSuccess={() => (platform?.events ?? eventBus).publish("seller-merchant:registration-success:v1", {})
+                                onSuccess={() => platform?.events?.emit("seller-merchant:registration-success:v1", {})
                                 }
                             />
                         )}
