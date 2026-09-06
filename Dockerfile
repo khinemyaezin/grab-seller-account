@@ -2,6 +2,8 @@ FROM node:22-alpine AS build
 
 WORKDIR /workspace
 
+RUN npm install -g npm@11.16.0
+
 COPY grab-seller-account/package*.json ./grab-seller-account/
 RUN --mount=type=secret,id=npmrc,target=/root/.npmrc \
     cd grab-seller-account \
