@@ -6,7 +6,7 @@ import type {
   StorefrontResponse,
   StorefrontsResponse,
   UpdateStorefrontProfileRequest,
-} from "@/features/merchant/types";
+} from "@/features/storefront/types";
 
 export const storefrontService = {
   list: (link: HateoasLink) =>

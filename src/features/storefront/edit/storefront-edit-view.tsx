@@ -8,17 +8,17 @@ import { QueryState } from "@khinemyaezin/seller-ui/components/query-state";
 import { Badge } from "@khinemyaezin/seller-ui/components/badge";
 import { resolveLink } from "@khinemyaezin/seller-api";
 import { useMerchantLink } from "@/features/merchant/api/use-root";
-import { useStorefront } from "@/features/merchant/api/use-storefronts";
-import type { StorefrontLifecycleEvent } from "@/features/merchant/types";
-import StorefrontEditForm from "./storefront-edit-form";
-import StorefrontLifecycleActions from "./storefront-lifecycle-actions";
+import { useStorefront } from "@/features/storefront/api/use-storefronts";
+import type { StorefrontLifecycleEvent } from "@/features/storefront/types";
+import { StorefrontEditForm } from "./storefront-edit-form";
+import { StorefrontLifecycleActions } from "./storefront-lifecycle-actions";
 
 export type StorefrontEditViewProps = {
   storefrontId: string;
   onLifecycleEvent?: (event: StorefrontLifecycleEvent) => void;
 };
 
-export default function StorefrontEditView({
+export function StorefrontEditView({
   storefrontId,
   onLifecycleEvent,
 }: StorefrontEditViewProps) {
@@ -26,10 +26,6 @@ export default function StorefrontEditView({
   const { data: storefront, isLoading, isError } = useStorefront(getStorefrontLink, storefrontId);
 
   const updateLink = resolveLink(storefront?._links, "update-storefront");
-  const activateLink = resolveLink(storefront?._links, "activate-storefront");
-  const suspendLink = resolveLink(storefront?._links, "suspend-storefront");
-  const reactivateLink = resolveLink(storefront?._links, "reactivate-storefront");
-  const closeLink = resolveLink(storefront?._links, "close-storefront");
 
   useEffect(() => {
     if (storefront?.name) {
@@ -52,13 +48,12 @@ export default function StorefrontEditView({
             </Button>
           </ButtonGroup>
           {storefront && (
-            <StorefrontLifecycleActions
-              activateLink={activateLink}
-              suspendLink={suspendLink}
-              reactivateLink={reactivateLink}
-              closeLink={closeLink}
-              onLifecycleEvent={onLifecycleEvent}
-            />
+            <ButtonGroup>
+              <StorefrontLifecycleActions
+                links={storefront._links}
+                onLifecycleEvent={onLifecycleEvent}
+              />
+            </ButtonGroup>
           )}
         </ButtonGroup>
       </Header>

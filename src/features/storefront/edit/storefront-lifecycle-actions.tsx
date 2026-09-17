@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { Button, ButtonStatus, Textarea } from "@khinemyaezin/seller-ui/components/index";
-import { ButtonGroup } from "@khinemyaezin/seller-ui/components/button-group";
+import { Button, Textarea } from "@khinemyaezin/seller-ui/components/index";
 import { Field, FieldError, FieldLabel } from "@khinemyaezin/seller-ui/components/field";
 import {
   Dialog,
@@ -10,39 +9,46 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@khinemyaezin/seller-ui/components/dialog";
-import type { HateoasLink } from "@khinemyaezin/seller-api";
-import type { StorefrontLifecycleEvent } from "@/features/merchant/types";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@khinemyaezin/seller-ui/components/dropdown-menu";
+import { Archive, CheckCircle, Ellipsis, Pause, RotateCcw } from "lucide-react";
+import { resolveLink, type HateoasLink } from "@khinemyaezin/seller-api";
+import type { StorefrontLifecycleEvent } from "@/features/storefront/types";
 import {
   useActivateStorefrontMutation,
   useCloseStorefrontMutation,
   useReactivateStorefrontMutation,
   useSuspendStorefrontMutation,
-} from "@/features/merchant/api/use-storefronts";
-import { problemDetailMessage } from "@/features/merchant/lib/problem-detail";
+} from "@/features/storefront/api/use-storefronts";
+import { problemDetailMessage } from "@/features/storefront/lib/problem-detail";
 
 export type StorefrontLifecycleActionsProps = {
-  activateLink?: HateoasLink;
-  suspendLink?: HateoasLink;
-  reactivateLink?: HateoasLink;
-  closeLink?: HateoasLink;
+  links?: Record<string, HateoasLink>;
   onLifecycleEvent?: (event: StorefrontLifecycleEvent) => void;
 };
 
 type ConfirmKind = "activate" | "reactivate";
-
 type ReasonKind = "suspend" | "close";
 
-export default function StorefrontLifecycleActions({
-  activateLink,
-  suspendLink,
-  reactivateLink,
-  closeLink,
+export function StorefrontLifecycleActions({
+  links,
   onLifecycleEvent,
 }: StorefrontLifecycleActionsProps) {
+  const activateLink = resolveLink(links, "activate-storefront");
+  const suspendLink = resolveLink(links, "suspend-storefront");
+  const reactivateLink = resolveLink(links, "reactivate-storefront");
+  const closeLink = resolveLink(links, "close-storefront");
+
   const activateMutation = useActivateStorefrontMutation();
   const reactivateMutation = useReactivateStorefrontMutation();
   const suspendMutation = useSuspendStorefrontMutation();
   const closeMutation = useCloseStorefrontMutation();
+
   const [confirmKind, setConfirmKind] = useState<ConfirmKind | null>(null);
   const [reasonKind, setReasonKind] = useState<ReasonKind | null>(null);
   const [reason, setReason] = useState("");
@@ -124,82 +130,75 @@ export default function StorefrontLifecycleActions({
     }
   };
 
-  if (!activateLink && !suspendLink && !reactivateLink && !closeLink) {
+  const hasActions = Boolean(
+    activateLink
+    || suspendLink
+    || reactivateLink
+    || closeLink,
+  );
+
+  if (!hasActions) {
     return null;
   }
 
   return (
     <>
-      <ButtonGroup>
-        {activateLink && (
-          <Button
-            type="button"
-            variant="secondary"
-            disabled={pending}
-            onClick={() => setConfirmKind("activate")}
-          >
-            <ButtonStatus
-              status={activateMutation.isPending ? "pending" : "idle"}
-              pendingLabel="Activating…"
-            >
-              Activate
-            </ButtonStatus>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button type="button" variant="secondary" disabled={pending}>
+            <Ellipsis />
           </Button>
-        )}
-        {reactivateLink && (
-          <Button
-            type="button"
-            variant="secondary"
-            disabled={pending}
-            onClick={() => setConfirmKind("reactivate")}
-          >
-            <ButtonStatus
-              status={reactivateMutation.isPending ? "pending" : "idle"}
-              pendingLabel="Reactivating…"
-            >
-              Reactivate
-            </ButtonStatus>
-          </Button>
-        )}
-        {suspendLink && (
-          <Button
-            type="button"
-            variant="secondary"
-            disabled={pending}
-            onClick={() => {
-              setReason("");
-              setReasonError(undefined);
-              setReasonKind("suspend");
-            }}
-          >
-            <ButtonStatus
-              status={suspendMutation.isPending ? "pending" : "idle"}
-              pendingLabel="Suspending…"
-            >
-              Suspend
-            </ButtonStatus>
-          </Button>
-        )}
-        {closeLink && (
-          <Button
-            type="button"
-            variant="destructive"
-            disabled={pending}
-            onClick={() => {
-              setReason("");
-              setReasonError(undefined);
-              setReasonKind("close");
-            }}
-          >
-            <ButtonStatus
-              status={closeMutation.isPending ? "pending" : "idle"}
-              pendingLabel="Closing…"
-            >
-              Close
-            </ButtonStatus>
-          </Button>
-        )}
-      </ButtonGroup>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuGroup>
+            {activateLink && (
+              <DropdownMenuItem
+                disabled={pending}
+                onClick={() => setConfirmKind("activate")}
+              >
+                <CheckCircle />
+                Activate
+              </DropdownMenuItem>
+            )}
+            {reactivateLink && (
+              <DropdownMenuItem
+                disabled={pending}
+                onClick={() => setConfirmKind("reactivate")}
+              >
+                <RotateCcw />
+                Reactivate
+              </DropdownMenuItem>
+            )}
+            {suspendLink && (
+              <DropdownMenuItem
+                disabled={pending}
+                onClick={() => {
+                  setReason("");
+                  setReasonError(undefined);
+                  setReasonKind("suspend");
+                }}
+              >
+                <Pause />
+                Suspend
+              </DropdownMenuItem>
+            )}
+            {closeLink && (
+              <DropdownMenuItem
+                variant="destructive"
+                disabled={pending}
+                onClick={() => {
+                  setReason("");
+                  setReasonError(undefined);
+                  setReasonKind("close");
+                }}
+              >
+                <Archive />
+                Close
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <Dialog
         open={confirmKind !== null}

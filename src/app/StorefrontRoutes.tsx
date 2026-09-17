@@ -3,9 +3,9 @@ import { NotFoundPage } from "@khinemyaezin/seller-ui";
 import { HateoasLink } from "@khinemyaezin/seller-api";
 import { SellerPlatform } from "@khinemyaezin/seller-contracts";
 import AccountProviders from "./AccountProviders";
-import StorefrontListPage from "@/features/merchant/storefront/storefront-list-page";
-import StorefrontNewPage from "@/features/merchant/storefront/storefront-new-page";
-import StorefrontEditPage from "@/features/merchant/storefront/storefront-edit-page";
+import StorefrontListPage from "@/features/storefront/list/storefront-list-page";
+import StorefrontNewPage from "@/features/storefront/new/storefront-new-page";
+import StorefrontEditPage from "@/features/storefront/edit/storefront-edit-page";
 import "../styles.css";
 
 export default function StorefrontRoutes({

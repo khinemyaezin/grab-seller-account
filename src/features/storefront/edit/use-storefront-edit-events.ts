@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { usePlatform } from "@khinemyaezin/seller-ui";
-import type { StorefrontLifecycleEvent } from "@/features/merchant/types";
+import type { StorefrontLifecycleEvent } from "@/features/storefront/types";
 
 export function useStorefrontEditEvents() {
   const platform = usePlatform();

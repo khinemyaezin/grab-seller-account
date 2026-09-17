@@ -8,7 +8,7 @@ import {
 } from "@khinemyaezin/seller-ui/components/table";
 import { Badge } from "@khinemyaezin/seller-ui/components/badge";
 import { Link } from "react-router";
-import { hasLink, resolveLink } from "@khinemyaezin/seller-api";
+import { hasLink, resolveLink, type HateoasLink } from "@khinemyaezin/seller-api";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,9 +19,8 @@ import {
 import { Ellipsis } from "lucide-react";
 import { Button } from "@khinemyaezin/seller-ui/components/index";
 import { QueryState } from "@khinemyaezin/seller-ui/components/query-state";
-import { useMerchantLink } from "@/features/merchant/api/use-root";
-import { useStorefronts } from "@/features/merchant/api/use-storefronts";
-import type { StorefrontResponse, StorefrontStatus } from "@/features/merchant/types";
+import { useStorefronts } from "@/features/storefront/api/use-storefronts";
+import type { StorefrontLifecycleEvent, StorefrontResponse, StorefrontStatus } from "@/features/storefront/types";
 
 const STATUS_VARIANT: Record<StorefrontStatus, "default" | "secondary" | "destructive" | "outline"> = {
   DRAFT: "outline",
@@ -30,17 +29,17 @@ const STATUS_VARIANT: Record<StorefrontStatus, "default" | "secondary" | "destru
   CLOSED: "secondary",
 };
 
-export default function StorefrontTable() {
-  const listLink = useMerchantLink("listStorefronts");
-  const { data, isLoading, isError } = useStorefronts(listLink);
+export type StorefrontTableProps = {
+  link?: HateoasLink;
+  onLifecycleEvent?: (event: StorefrontLifecycleEvent) => void;
+};
+
+export function StorefrontTable({ link, onLifecycleEvent }: StorefrontTableProps) {
+  const { data, isLoading, isError } = useStorefronts(link);
   const storefronts =
     data?._embedded?.storefrontResponseList
     ?? data?._embedded?.storefrontResponses
     ?? [];
-
-  if (storefronts.length == 0) {
-    return <NoStorefronts />
-  }
 
   return (
     <QueryState
@@ -48,30 +47,36 @@ export default function StorefrontTable() {
       isError={isError}
       errorMessage="Failed to load storefronts."
     >
-      <Table className="[&_tr>*:first-child]:pl-(--card-spacing) [&_tr>*:last-child]:pr-(--card-spacing)">
-        <TableHeader>
-          <TableRow className="bg-muted">
-            <TableHead>Name</TableHead>
-            <TableHead>Slug</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {storefronts.map((storefront) => (
-            <StorefrontTableRow
-              key={storefront.storefrontId}
-              storefront={storefront}
-            />
-          ))}
-        </TableBody>
-      </Table>
+      {storefronts.length === 0 ? (
+        <NoStorefronts />
+      ) : (
+        <Table className="[&_tr>*:first-child]:pl-(--card-spacing) [&_tr>*:last-child]:pr-(--card-spacing)">
+          <TableHeader>
+            <TableRow className="bg-muted">
+              <TableHead>Name</TableHead>
+              <TableHead>Slug</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {storefronts.map((storefront) => (
+              <StorefrontTableRow
+                key={storefront.storefrontId}
+                storefront={storefront}
+                onLifecycleEvent={onLifecycleEvent}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </QueryState>
   );
 }
 
 type StorefrontTableRowProps = {
   storefront: StorefrontResponse;
+  onLifecycleEvent?: (event: StorefrontLifecycleEvent) => void;
 };
 
 function StorefrontTableRow({ storefront }: StorefrontTableRowProps) {
@@ -92,7 +97,7 @@ function StorefrontTableRow({ storefront }: StorefrontTableRowProps) {
       <TableCell>
         <Badge variant={STATUS_VARIANT[storefront.status]}>{storefront.status}</Badge>
       </TableCell>
-      <TableCell>
+      <TableCell className="text-right">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost">

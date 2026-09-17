@@ -3,7 +3,7 @@ import { useShellBreadcrumb } from "@khinemyaezin/seller-ui";
 import { QueryState } from "@khinemyaezin/seller-ui/components/query-state";
 import { Card, CardContent } from "@khinemyaezin/seller-ui/components/card";
 import { useMerchantLink, useRoot } from "@/features/merchant/api/use-root";
-import StorefrontEditView from "./storefront-edit-view";
+import { StorefrontEditView } from "./storefront-edit-view";
 import { useStorefrontEditEvents } from "./use-storefront-edit-events";
 
 export default function StorefrontEditPage() {
@@ -14,7 +14,7 @@ export default function StorefrontEditPage() {
   useShellBreadcrumb(title);
 
   return (
-    <div className="container mx-auto max-w-3xl p-6">
+    <div className="container mx-auto max-w-2xl p-6">
       <QueryState
         isLoading={isLoading}
         isError={isError}

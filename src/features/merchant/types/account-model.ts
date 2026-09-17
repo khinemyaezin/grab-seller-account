@@ -18,7 +18,7 @@ export type MerchantRoot = {
 
 export type StorefrontLifecycleEvent =
     | { type: "titleResolved"; title: string }
-    | { type: "created"; message?: string }
+    | { type: "created"; storefrontId?: string; message?: string }
     | { type: "createFailed"; message?: string }
     | { type: "updated"; message?: string }
     | { type: "updateFailed"; message?: string }

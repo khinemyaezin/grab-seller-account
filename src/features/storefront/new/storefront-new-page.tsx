@@ -1,38 +1,37 @@
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 import { ArrowLeftIcon } from "lucide-react";
 import { ButtonGroup } from "@khinemyaezin/seller-ui/components/button-group";
 import { Button } from "@khinemyaezin/seller-ui/components/button";
 import { Header } from "@khinemyaezin/seller-ui/layout/header";
-import { usePlatform } from "@khinemyaezin/seller-ui";
+import { usePlatform, useShellBreadcrumb } from "@khinemyaezin/seller-ui";
 import { QueryState } from "@khinemyaezin/seller-ui/components/query-state";
 import { Card, CardContent } from "@khinemyaezin/seller-ui/components/card";
 import { useMerchantLink, useRoot } from "@/features/merchant/api/use-root";
-import type { StorefrontLifecycleEvent } from "@/features/merchant/types";
-import StorefrontNewForm from "./storefront-new-form";
+import { StorefrontNewForm } from "./storefront-new-form";
+import { useStorefrontCreateEvents } from "./use-storefront-create-events";
 
 export default function StorefrontNewPage() {
   const navigate = useNavigate();
   const platform = usePlatform();
   const { isLoading, isError } = useRoot();
   const createStorefrontLink = useMerchantLink("createStorefront");
+  const { handleEvent } = useStorefrontCreateEvents();
 
-  const toast = (type: "success" | "error", message: string) =>
-    platform?.events.emit("shell:toast:v1", { type, message, position: "top-center" });
+  useShellBreadcrumb("Add Storefront");
 
-  const handleEvent = (event: StorefrontLifecycleEvent) => {
-    switch (event.type) {
-      case "created":
-        toast("success", event.message ?? "Storefront created");
+  useEffect(() => {
+    if (!platform?.events) return;
+    const unsubs = [
+      platform.events.subscribe("form:discard:v1", () => {
         navigate("..");
-        break;
-      case "createFailed":
-        toast("error", event.message ?? "Failed to create storefront");
-        break;
-    }
-  };
+      }),
+    ];
+    return () => unsubs.forEach((unsub) => unsub());
+  }, [navigate, platform?.events]);
 
   return (
-    <div className="container mx-auto max-w-3xl p-6">
+    <div className="container mx-auto max-w-2xl p-6">
       <Header
         title="Add Storefront"
         description="Choose a name and unique slug for this merchant’s storefront."

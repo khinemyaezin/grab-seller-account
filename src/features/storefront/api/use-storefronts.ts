@@ -8,7 +8,7 @@ import type {
   StorefrontResponse,
   StorefrontsResponse,
   UpdateStorefrontProfileRequest,
-} from "@/features/merchant/types";
+} from "@/features/storefront/types";
 import { storefrontService } from "./storefront";
 
 export function invalidateStorefrontsQueries(queryClient: QueryClient) {
