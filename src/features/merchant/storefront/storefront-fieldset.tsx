@@ -1,0 +1,62 @@
+import { useFormContext } from "react-hook-form";
+import { Input } from "@khinemyaezin/seller-ui/components/input";
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSet } from "@khinemyaezin/seller-ui/components/field";
+import type { StorefrontFormValues } from "@/features/merchant/types";
+import { STOREFRONT_SLUG_MAX_LENGTH, STOREFRONT_SLUG_PATTERN } from "@/features/merchant/lib/to-storefront-slug";
+
+export type StorefrontFieldsetProps = {
+  onNameChange?: (name: string) => void;
+  onSlugEdit?: () => void;
+  disabled?: boolean;
+};
+
+export default function StorefrontFieldset({ onNameChange, onSlugEdit, disabled }: StorefrontFieldsetProps) {
+  const { register, formState: { errors } } = useFormContext<StorefrontFormValues>();
+  const nameRegister = register("name", {
+    required: "Name is required",
+    maxLength: { value: 255, message: "Name must not exceed 255 characters" },
+    onChange: (event) => onNameChange?.(event.target.value),
+  });
+
+  return (
+    <FieldSet>
+      <FieldLegend>Storefront profile</FieldLegend>
+      <FieldDescription>The slug is unique across the marketplace and used in public URLs.</FieldDescription>
+      <FieldGroup>
+        <Field data-invalid={!!errors.name}>
+          <FieldLabel htmlFor="name">Name</FieldLabel>
+          <Input
+            id="name"
+            aria-invalid={!!errors.name}
+            disabled={disabled}
+            placeholder="Main Shop"
+            {...nameRegister}
+          />
+          <FieldError errors={[errors.name]} />
+        </Field>
+        <Field data-invalid={!!errors.slug}>
+          <FieldLabel htmlFor="slug">Slug</FieldLabel>
+          <Input
+            id="slug"
+            aria-invalid={!!errors.slug}
+            disabled={disabled}
+            placeholder="main-shop"
+            {...register("slug", {
+              required: "Slug is required",
+              maxLength: {
+                value: STOREFRONT_SLUG_MAX_LENGTH,
+                message: `Slug must not exceed ${STOREFRONT_SLUG_MAX_LENGTH} characters`,
+              },
+              pattern: {
+                value: STOREFRONT_SLUG_PATTERN,
+                message: "Slug must be lowercase kebab-case",
+              },
+              onChange: () => onSlugEdit?.(),
+            })}
+          />
+          <FieldError errors={[errors.slug]} />
+        </Field>
+      </FieldGroup>
+    </FieldSet>
+  );
+}
