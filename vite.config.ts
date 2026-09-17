@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
         name: 'grab_seller_account',
         filename: 'remoteEntry.js',
         manifest: true,
-        dts: {
+        dts: process.env.MF_DTS === "0" ? false : {
           generateTypes: {
             tsConfigPath: "./tsconfig.app.json",
             abortOnError: true,
@@ -23,7 +23,8 @@ export default defineConfig(({ mode }) => {
         },
         exposes: {
           './Routes': './src/app/AppRoutes.tsx',
-          './Service': './src/features/account/api/seller-account-service.ts'
+          './StorefrontRoutes': './src/app/StorefrontRoutes.tsx',
+          './Service': './src/features/merchant/api/seller-account-service.ts'
         },
         shared: {
           "react": { singleton: true, requiredVersion: "19.2.4" },
