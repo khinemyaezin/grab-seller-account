@@ -46,6 +46,7 @@ export interface StorefrontResponse {
   createdAt?: string;
   updatedAt?: string;
   version?: number;
+  salesChannelId?: string | null;
   _links?: HalLinks;
 }
 

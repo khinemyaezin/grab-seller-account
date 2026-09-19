@@ -34,7 +34,7 @@ export default function StorefrontNewPage() {
     <div className="container mx-auto max-w-2xl p-6">
       <Header
         title="Add Storefront"
-        description="Choose a name and unique slug for this merchant’s storefront."
+        description="Choose a name and unique slug for this merchant’s website channel."
       >
         <ButtonGroup>
           <Button type="button" variant="secondary" asChild>

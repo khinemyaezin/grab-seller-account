@@ -8,9 +8,10 @@ export type StorefrontFieldsetProps = {
   onNameChange?: (name: string) => void;
   onSlugEdit?: () => void;
   disabled?: boolean;
+  salesChannelId?: string | null;
 };
 
-export function StorefrontFieldset({ onNameChange, onSlugEdit, disabled }: StorefrontFieldsetProps) {
+export function StorefrontFieldset({ onNameChange, onSlugEdit, disabled, salesChannelId }: StorefrontFieldsetProps) {
   const { register, formState: { errors } } = useFormContext<StorefrontFormValues>();
   const nameRegister = register("name", {
     required: "Name is required",
@@ -21,7 +22,9 @@ export function StorefrontFieldset({ onNameChange, onSlugEdit, disabled }: Store
   return (
     <FieldSet>
       <FieldLegend>Storefront profile</FieldLegend>
-      <FieldDescription>The slug is unique across the marketplace and used in public URLs.</FieldDescription>
+      <FieldDescription>
+        This storefront brands your website channel. It is not the Grab marketplace. The slug is unique and used in public URLs.
+      </FieldDescription>
       <FieldGroup>
         <div className="grid grid-cols-2 gap-4">
           <Field data-invalid={!!errors.name}>
@@ -58,6 +61,18 @@ export function StorefrontFieldset({ onNameChange, onSlugEdit, disabled }: Store
             <FieldError errors={[errors.slug]} />
           </Field>
         </div>
+        {salesChannelId ? (
+          <Field>
+            <FieldLabel htmlFor="salesChannelId">Website channel</FieldLabel>
+            <Input
+              id="salesChannelId"
+              value={salesChannelId}
+              disabled
+              readOnly
+            />
+            <FieldDescription>Assigned when this merchant was approved. Used by public browse.</FieldDescription>
+          </Field>
+        ) : null}
       </FieldGroup>
     </FieldSet>
   );

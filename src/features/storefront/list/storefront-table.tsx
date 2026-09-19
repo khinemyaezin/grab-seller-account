@@ -124,7 +124,7 @@ function NoStorefronts() {
     <div className="flex flex-col items-center justify-center gap-1 py-8 text-center">
       <p className="text-base font-semibold text-foreground">No storefronts yet</p>
       <p className="text-sm text-muted-foreground">
-        Create a storefront to give this merchant a public brand presence.
+        Create a storefront to brand this merchant’s website channel. It is not the Grab marketplace.
       </p>
     </div>
   );
