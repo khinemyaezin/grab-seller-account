@@ -76,7 +76,7 @@ function StorefrontEditFormContent({
     <form onSubmit={handleSubmit(submit)}>
       <Card>
         <CardContent>
-          <StorefrontFieldset disabled={readOnly} />
+          <StorefrontFieldset disabled={readOnly} salesChannelId={seed.salesChannelId} />
         </CardContent>
       </Card>
     </form>

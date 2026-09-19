@@ -37,7 +37,7 @@ export function StorefrontEditView({
     <>
       <Header
         title={storefront?.name ?? "Edit Storefront"}
-        description="Update the storefront profile and lifecycle."
+        description="Update the website channel brand and slug."
       >
         <ButtonGroup>
           <ButtonGroup>

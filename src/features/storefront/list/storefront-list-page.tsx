@@ -50,7 +50,7 @@ export default function StorefrontListPage() {
     <div className="container mx-auto max-w-3xl p-6">
       <Header
         title="Storefronts"
-        description="Create and manage the brand presence for this merchant."
+        description="Create and manage the brand for this merchant’s website channel."
       />
       <QueryState
         isLoading={isLoading}
